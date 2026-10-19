@@ -1,0 +1,1154 @@
+<!doctype html>
+<!--
+  Del-Penn Flyers — website redesign (single page)
+
+  SETUP NOTES
+  1. Images load from the current site (www.delpenn.org/wp-content/uploads/...).
+     If you move to a new host, download those files and update the src/data-full paths.
+  2. Contact form: replace YOUR-FORM-ID in the <form action="..."> with a real endpoint
+     (Formspree, Basin, Netlify Forms, or your WordPress form plugin). Until then the
+     form shows a "not connected yet" notice instead of sending.
+  3. Rates: edit the data-value attributes in the rate card (section #membership).
+     The cost estimator reads them automatically.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Del-Penn Flyers — Delaware Flying Club Since 1973</title>
+<meta name="description" content="Del-Penn Flyers is a member-run flying club at New Castle Airport (ILG), Delaware. Fun, safe, and economical flying in a Cessna 172 and Cessna 182 since 1973.">
+<meta name="theme-color" content="#8E1B22">
+<meta name="robots" content="noindex, nofollow">
+<meta property="og:title" content="Del-Penn Flyers — Take to the skies">
+<meta property="og:description" content="Fun, safe, and economical flying since 1973. Two well-equipped Cessnas at New Castle Airport (ILG).">
+<meta property="og:image" content="https://www.delpenn.org/wp-content/uploads/2015/10/cropped-planes.jpg">
+<link rel="icon" href="https://www.delpenn.org/wp-content/uploads/2023/12/cropped-cropped-cropped-android-chrome-512x512-1-32x32.png" sizes="32x32">
+<link rel="icon" href="https://www.delpenn.org/wp-content/uploads/2023/12/cropped-cropped-cropped-android-chrome-512x512-1-192x192.png" sizes="192x192">
+<link rel="apple-touch-icon" href="https://www.delpenn.org/wp-content/uploads/2023/12/cropped-cropped-cropped-android-chrome-512x512-1-180x180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,100..900;1,62..125,100..900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F5F2EA;
+    --paper-2: #EDE7D9;
+    --card: #FFFDF8;
+    --ink: #16171B;
+    --ink-2: #464851;
+    --ink-3: #6E6F76;
+    --line: #DCD5C6;
+    --line-2: #C7BEAA;
+    --maroon: #8E1B22;
+    --maroon-2: #6E141A;
+    --maroon-tint: #F2E1DE;
+    --sky: #E3E8F3;
+    --sky-grid: #D7DEEE;
+    --sky-line: #C6D0E5;
+    --green: #1F5A45;
+    --taxi: #E7B22F;
+    --night: #131519;
+    --night-2: #1C1F25;
+    --night-line: #30343D;
+    --night-text: #EEEAE0;
+    --night-muted: #A4A296;
+
+    --sans: "Archivo", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+    --mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+    --wrap: 1200px;
+    --gutter: clamp(16px, 4vw, 40px);
+    --r: 6px;
+    --header-h: 76px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: calc(var(--header-h) + 12px); -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 17px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+  }
+  img { display: block; max-width: 100%; height: auto; }
+  a { color: inherit; }
+  p { margin: 0 0 1em; }
+  button { font: inherit; color: inherit; }
+  :focus-visible { outline: 2px solid var(--maroon); outline-offset: 3px; border-radius: 2px; }
+
+  .wrap { max-width: var(--wrap); margin: 0 auto; padding: 0 var(--gutter); }
+  .skip { position: absolute; left: -9999px; top: 8px; z-index: 100; background: var(--ink); color: #fff; padding: 10px 14px; border-radius: 4px; }
+  .skip:focus { left: 8px; }
+  .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+  h1, h2, h3 { margin: 0; font-weight: 800; line-height: 1; letter-spacing: -0.02em; font-stretch: 115%; text-wrap: balance; }
+  h2 { font-size: clamp(36px, 5.2vw, 64px); }
+  h3 { font-size: 22px; line-height: 1.15; letter-spacing: -0.01em; font-stretch: 110%; }
+
+  .kicker {
+    display: flex; align-items: center; gap: 12px;
+    margin: 0 0 20px;
+    font: 500 12px/1.3 var(--mono);
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--maroon);
+  }
+  .kicker::before { content: ""; width: 28px; height: 2px; background: currentColor; flex: none; }
+  .lead { font-size: clamp(18px, 1.6vw, 20px); color: var(--ink-2); max-width: 46ch; }
+
+  section { padding: clamp(72px, 10vw, 128px) 0; }
+  .section-head {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 24px 64px; align-items: end;
+    margin-bottom: clamp(40px, 6vw, 72px);
+  }
+  .section-head p { margin: 0; color: var(--ink-2); max-width: 50ch; }
+
+  /* Buttons */
+  .btn {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 14px 22px;
+    border: 1.5px solid transparent; border-radius: 4px;
+    font: 600 15px/1 var(--sans);
+    text-decoration: none; cursor: pointer;
+    transition: background-color .2s, color .2s, border-color .2s;
+  }
+  .btn .arrow { transition: transform .2s; }
+  .btn:hover .arrow { transform: translateX(3px); }
+  .btn-primary { background: var(--maroon); color: #fff; }
+  .btn-primary:hover { background: var(--maroon-2); }
+  .btn-ghost { border-color: var(--ink); color: var(--ink); }
+  .btn-ghost:hover { background: var(--ink); color: var(--paper); }
+  .btn-light { background: var(--paper); color: var(--ink); }
+  .btn-light:hover { background: #fff; }
+
+  /* ---------- Header ---------- */
+  .site-header {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(245, 242, 234, 0.92);
+    -webkit-backdrop-filter: saturate(1.4) blur(10px);
+    backdrop-filter: saturate(1.4) blur(10px);
+    border-bottom: 1px solid transparent;
+    transition: border-color .2s;
+  }
+  .site-header.scrolled { border-bottom-color: var(--line); }
+  .nav { display: flex; align-items: center; justify-content: space-between; gap: 24px; height: var(--header-h); }
+  .brand { display: flex; align-items: center; flex: none; }
+  .brand img { height: 50px; width: auto; }
+  .nav-links { display: flex; align-items: center; gap: 30px; margin: 0; padding: 0; list-style: none; }
+  .nav-links a { position: relative; padding: 6px 0; font-size: 15px; font-weight: 500; color: var(--ink-2); text-decoration: none; }
+  .nav-links a:hover, .nav-links a.active { color: var(--ink); }
+  .nav-links a.active::after { content: ""; position: absolute; left: 0; right: 0; bottom: -2px; height: 2px; background: var(--maroon); }
+  .nav-links .mobile-cta { display: none; }
+  .nav-cta { padding: 11px 18px; }
+  .menu-btn {
+    display: none; align-items: center; justify-content: center;
+    width: 44px; height: 44px;
+    background: transparent; border: 1.5px solid var(--ink); border-radius: 4px; cursor: pointer;
+  }
+  .menu-btn span, .menu-btn span::before, .menu-btn span::after {
+    display: block; width: 18px; height: 2px; background: var(--ink); position: relative; transition: transform .2s, background-color .2s;
+  }
+  .menu-btn span::before, .menu-btn span::after { content: ""; position: absolute; left: 0; }
+  .menu-btn span::before { top: -6px; }
+  .menu-btn span::after { top: 6px; }
+  .menu-btn[aria-expanded="true"] span { background: transparent; }
+  .menu-btn[aria-expanded="true"] span::before { transform: translateY(6px) rotate(45deg); }
+  .menu-btn[aria-expanded="true"] span::after { transform: translateY(-6px) rotate(-45deg); }
+
+  @media (max-width: 940px) {
+    .menu-btn { display: inline-flex; }
+    .nav-cta { display: none; }
+    .nav-links {
+      display: none;
+      position: absolute; top: var(--header-h); left: 0; right: 0;
+      flex-direction: column; align-items: stretch; gap: 0;
+      padding: 4px var(--gutter) 20px;
+      background: var(--paper); border-bottom: 1px solid var(--line);
+      box-shadow: 0 20px 40px -24px rgba(22, 23, 27, .35);
+    }
+    .nav-links.open { display: flex; }
+    .nav-links a { display: block; padding: 14px 0; font-size: 18px; color: var(--ink); border-bottom: 1px solid var(--line); }
+    .nav-links a.active::after { display: none; }
+    .nav-links .mobile-cta { display: block; padding-top: 16px; }
+    .nav-links .mobile-cta a { display: flex; justify-content: center; border: 0; color: #fff; font-size: 16px; padding: 15px 22px; }
+  }
+
+  /* ---------- Hero ---------- */
+  .hero { padding: clamp(36px, 6vw, 80px) 0 clamp(72px, 9vw, 112px); }
+  .hero-meta {
+    display: flex; flex-wrap: wrap; gap: 8px 18px;
+    margin: 0 0 clamp(20px, 3vw, 32px); padding: 0; list-style: none;
+    font: 500 12px/1.4 var(--mono); letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-3);
+  }
+  .hero-meta li { display: flex; align-items: center; gap: 18px; }
+  .hero-meta li + li::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--taxi); }
+  .hero h1 {
+    font-size: clamp(50px, 14vw, 148px);
+    font-stretch: 125%;
+    line-height: 0.88;
+    letter-spacing: -0.035em;
+  }
+  .hero h1 em { font-style: italic; color: var(--maroon); }
+  .hero-row {
+    display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 28px;
+    margin-top: clamp(28px, 4vw, 44px);
+  }
+  .hero-row .lead { margin: 0; }
+  .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+
+  .hero-visual { position: relative; margin-top: clamp(36px, 5vw, 56px); }
+  .hero-photo { position: relative; margin: 0; aspect-ratio: 21 / 9; overflow: hidden; border-radius: var(--r); background: var(--sky); }
+  .hero-photo img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 54%; }
+  .photo-pill {
+    position: absolute; top: 14px; right: 14px;
+    padding: 6px 10px; border-radius: 3px;
+    background: rgba(22, 23, 27, .62); color: #fff;
+    font: 500 11px/1 var(--mono); letter-spacing: 0.1em; text-transform: uppercase;
+  }
+  .stats {
+    position: absolute; left: 0; bottom: 0;
+    display: grid; grid-template-columns: repeat(4, auto);
+    margin: 0; padding: 0; list-style: none;
+    background: var(--paper);
+    border-top-right-radius: var(--r);
+  }
+  .stat { padding: 18px 28px 4px 0; margin-right: 28px; border-right: 1px solid var(--line); }
+  .stat:last-child { border-right: 0; margin-right: 0; }
+  .stat:first-child { padding-left: 0; }
+  .stat b { display: block; font-size: clamp(26px, 2.6vw, 36px); font-weight: 800; font-stretch: 125%; letter-spacing: -0.02em; line-height: 1; }
+  .stat span { display: block; margin-top: 8px; font: 500 11px/1.3 var(--mono); letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-3); }
+
+  @media (max-width: 760px) {
+    .hero-photo { aspect-ratio: 4 / 3; }
+    .hero-photo img { object-position: 38% 54%; }
+    .stats { position: static; grid-template-columns: 1fr 1fr; margin-top: 12px; border: 1px solid var(--line); border-radius: var(--r); }
+    .stat, .stat:first-child { padding: 16px; margin: 0; border-right: 0; border-bottom: 1px solid var(--line); }
+    .stat:nth-child(odd) { border-right: 1px solid var(--line); }
+    .stat:nth-last-child(-n+2) { border-bottom: 0; }
+  }
+
+  /* ---------- Values ---------- */
+  .values { padding: 0 0 clamp(72px, 9vw, 112px); }
+  .values-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; }
+  .value { padding-top: 22px; border-top: 2px solid var(--ink); }
+  .value .n { font: 500 12px/1 var(--mono); letter-spacing: 0.12em; color: var(--maroon); }
+  .value h3 { margin: 14px 0 12px; }
+  .value p { margin: 0; font-size: 16px; color: var(--ink-2); }
+  @media (max-width: 760px) { .values-grid { grid-template-columns: 1fr; gap: 32px; } }
+
+  /* ---------- Fleet ---------- */
+  .fleet {
+    background-color: var(--sky);
+    background-image:
+      linear-gradient(var(--sky-grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--sky-grid) 1px, transparent 1px);
+    background-size: 96px 96px;
+    background-position: center top;
+  }
+  .plane {
+    --livery: var(--maroon);
+    display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+    gap: clamp(40px, 5vw, 72px); align-items: center;
+  }
+  .plane + .plane { margin-top: clamp(80px, 10vw, 128px); }
+  .plane.flip .plane-media { order: 2; }
+  .plane.skyhawk { --livery: var(--green); }
+  .plane-media { position: relative; margin: 0; }
+  .plane-photo { aspect-ratio: 3 / 2; overflow: hidden; border-radius: var(--r); background: var(--sky-line); box-shadow: 0 30px 60px -30px rgba(22, 23, 27, .4); }
+  .plane-photo img { width: 100%; height: 100%; object-fit: cover; }
+  .plane-photo.zoom img { transform: scale(1.22); transform-origin: 0% 58%; }
+  .panel-thumb {
+    position: absolute; right: -18px; bottom: -32px;
+    width: 38%; padding: 0;
+    background: var(--card); border: 5px solid var(--card); border-radius: 8px;
+    overflow: hidden; cursor: zoom-in;
+    box-shadow: 0 18px 40px -16px rgba(22, 23, 27, .5);
+    transition: transform .25s;
+  }
+  .panel-thumb:hover { transform: translateY(-3px); }
+  .flip .panel-thumb { right: auto; left: -18px; }
+  .panel-thumb img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 3px; }
+  .panel-thumb span {
+    position: absolute; left: 6px; bottom: 6px;
+    padding: 5px 7px; border-radius: 3px;
+    background: rgba(22, 23, 27, .74); color: #fff;
+    font: 500 10px/1 var(--mono); letter-spacing: 0.1em; text-transform: uppercase;
+  }
+  .plane-body .model { margin: 0 0 10px; font: 500 12px/1.3 var(--mono); letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); }
+  .tail {
+    margin: 0 0 22px;
+    font-size: clamp(52px, 7.2vw, 100px); font-weight: 800; font-stretch: 125%;
+    letter-spacing: -0.04em; line-height: 0.9; color: var(--livery);
+  }
+  .plane-body > p { color: var(--ink-2); max-width: 46ch; }
+  .specs { display: grid; grid-template-columns: max-content 1fr; margin: 28px 0 0; border-top: 1px solid var(--sky-line); }
+  .specs dt, .specs dd { margin: 0; padding: 12px 0; border-bottom: 1px solid var(--sky-line); }
+  .specs dt { padding-right: 28px; padding-top: 15px; font: 500 11.5px/1.5 var(--mono); letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-3); }
+  .specs dd { font-weight: 600; }
+  .specs .rate { font-size: 22px; font-weight: 800; font-stretch: 118%; color: var(--livery); }
+  .specs .rate small { font-size: 14px; font-weight: 500; font-stretch: 100%; color: var(--ink-3); }
+
+  @media (max-width: 860px) {
+    .plane { grid-template-columns: 1fr; }
+    .plane.flip .plane-media { order: 0; }
+    .panel-thumb, .flip .panel-thumb { right: 12px; left: auto; bottom: -28px; width: 40%; }
+  }
+
+  /* ---------- Membership ---------- */
+  .membership { background: var(--night); color: var(--night-text); }
+  .membership .kicker { color: var(--taxi); }
+  .membership h2 { color: #fff; }
+  .mem-grid { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: clamp(40px, 6vw, 88px); align-items: start; }
+  .mem-intro > p { margin-top: 24px; color: var(--night-muted); max-width: 48ch; }
+  .ratecard { margin: 36px 0 0; padding: 0; list-style: none; border-top: 1px solid var(--night-line); }
+  .ratecard li { display: flex; align-items: baseline; gap: 12px; padding: 16px 0; border-bottom: 1px solid var(--night-line); }
+  .ratecard .item { font-weight: 600; }
+  .ratecard .item small { display: block; margin-top: 2px; font: 400 12px/1.4 var(--mono); letter-spacing: 0.04em; color: var(--night-muted); }
+  .ratecard .dots { flex: 1; min-width: 16px; border-bottom: 1px dotted #555A66; transform: translateY(-6px); }
+  .ratecard .price { font-size: 26px; font-weight: 800; font-stretch: 120%; color: #fff; white-space: nowrap; }
+  .ratecard .price small { margin-left: 3px; font-size: 13px; font-weight: 500; font-stretch: 100%; color: var(--night-muted); }
+  .footnote { margin: 18px 0 0; font-size: 14px; color: var(--night-muted); }
+
+  .holdshort { margin-top: 40px; padding: 22px 24px 24px; background: var(--night-2); border: 1px solid var(--night-line); border-radius: var(--r); }
+  .marking {
+    height: 22px; margin-bottom: 18px;
+    background:
+      linear-gradient(var(--taxi), var(--taxi)) 0 0 / 100% 3px no-repeat,
+      linear-gradient(var(--taxi), var(--taxi)) 0 6px / 100% 3px no-repeat,
+      repeating-linear-gradient(90deg, var(--taxi) 0 20px, transparent 20px 32px) 0 13px / 100% 3px no-repeat,
+      repeating-linear-gradient(90deg, var(--taxi) 0 20px, transparent 20px 32px) 0 19px / 100% 3px no-repeat;
+  }
+  .holdshort strong { display: block; margin-bottom: 6px; font: 600 12px/1.3 var(--mono); letter-spacing: 0.14em; text-transform: uppercase; color: var(--taxi); }
+  .holdshort p { margin: 0; }
+
+  .calc {
+    position: sticky; top: calc(var(--header-h) + 24px);
+    padding: clamp(24px, 3vw, 36px);
+    background: var(--night-2); border: 1px solid var(--night-line); border-radius: 10px;
+  }
+  .calc h3 { font-size: 26px; color: #fff; }
+  .calc .sub { margin: 8px 0 28px; font-size: 15px; color: var(--night-muted); }
+  .field { margin-bottom: 20px; }
+  .field-top { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-bottom: 6px; }
+  .field label { font-weight: 600; }
+  .field output { font: 600 15px/1 var(--mono); color: var(--taxi); white-space: nowrap; }
+  input[type="range"] { --p: 0%; width: 100%; height: 28px; margin: 0; background: transparent; cursor: pointer; -webkit-appearance: none; appearance: none; }
+  input[type="range"]::-webkit-slider-runnable-track { height: 4px; border-radius: 4px; background: linear-gradient(90deg, var(--taxi) var(--p), var(--night-line) var(--p)); }
+  input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 22px; height: 22px; margin-top: -9px; border-radius: 50%; background: var(--taxi); border: 4px solid var(--night-2); box-shadow: 0 0 0 1px var(--taxi); }
+  input[type="range"]::-moz-range-track { height: 4px; border-radius: 4px; background: var(--night-line); }
+  input[type="range"]::-moz-range-progress { height: 4px; border-radius: 4px; background: var(--taxi); }
+  input[type="range"]::-moz-range-thumb { width: 14px; height: 14px; border-radius: 50%; background: var(--taxi); border: 4px solid var(--night-2); box-shadow: 0 0 0 1px var(--taxi); }
+  input[type="range"]:focus-visible { outline: 2px solid var(--taxi); outline-offset: 4px; }
+  .total { margin-top: 8px; padding-top: 24px; border-top: 1px solid var(--night-line); }
+  .total-row { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+  .total .big { font-size: clamp(46px, 5vw, 64px); font-weight: 800; font-stretch: 125%; letter-spacing: -0.03em; line-height: 1; color: #fff; }
+  .total .per { font: 500 12px/1.3 var(--mono); letter-spacing: 0.12em; text-transform: uppercase; color: var(--night-muted); }
+  .total .eff { margin: 10px 0 0; font-size: 14.5px; color: var(--night-muted); }
+  .breakdown { margin: 20px 0 0; padding: 0; list-style: none; font-size: 14.5px; color: var(--night-muted); }
+  .breakdown li { display: flex; justify-content: space-between; gap: 12px; padding: 6px 0; }
+  .breakdown b { font: 500 14px/1.5 var(--mono); color: var(--night-text); }
+  .upfront { margin-top: 20px; padding: 14px 16px; border-radius: 6px; background: rgba(231, 178, 47, .08); border: 1px solid rgba(231, 178, 47, .3); font-size: 14.5px; }
+  .upfront b { color: var(--taxi); }
+  .calc .btn { width: 100%; justify-content: center; margin-top: 22px; }
+  .calc .fine { margin: 14px 0 0; font-size: 12.5px; color: var(--night-muted); text-align: center; }
+
+  @media (max-width: 900px) {
+    .mem-grid { grid-template-columns: 1fr; }
+    .calc { position: static; }
+  }
+
+  /* ---------- History & officers ---------- */
+  .logbook-wrap { overflow: hidden; border: 1px solid var(--line-2); border-radius: var(--r); background: var(--card); }
+  .logbook { width: 100%; border-collapse: collapse; font-size: 16px; }
+  .logbook caption { padding: 14px 20px; text-align: left; font: 500 11px/1.3 var(--mono); letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); background: var(--paper-2); border-bottom: 1px solid var(--line-2); }
+  .logbook th { padding: 12px 20px; text-align: left; font: 500 11px/1.3 var(--mono); letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); border-bottom: 2px solid var(--ink); }
+  .logbook td { padding: 20px; vertical-align: top; border-bottom: 1px solid var(--line); }
+  .logbook th + th, .logbook td + td { border-left: 1px solid var(--line); }
+  .logbook tbody tr:last-child td { border-bottom: 0; }
+  .logbook .date { width: 1%; white-space: nowrap; font: 600 15px/1.5 var(--mono); color: var(--maroon); }
+  .logbook .craft { width: 34%; font-weight: 700; }
+  .logbook .remarks { color: var(--ink-2); }
+  .logbook tr.today td { background: var(--maroon-tint); }
+
+  @media (max-width: 700px) {
+    .logbook thead { display: none; }
+    .logbook, .logbook caption, .logbook tbody, .logbook tr, .logbook td, .logbook .date, .logbook .craft { display: block; width: auto; }
+    .logbook tr { padding: 18px 18px; border-bottom: 1px solid var(--line); }
+    .logbook tbody tr:last-child { border-bottom: 0; }
+    .logbook td, .logbook td + td { padding: 0; border: 0; }
+    .logbook .craft { margin: 4px 0 6px; }
+    .logbook tr.today td { background: none; }
+    .logbook tr.today { background: var(--maroon-tint); }
+  }
+
+  .crew { margin-top: clamp(64px, 8vw, 96px); }
+  .crew-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 8px 24px; padding-bottom: 14px; border-bottom: 2px solid var(--ink); }
+  .crew-head h3 { font-size: clamp(26px, 3vw, 34px); }
+  .crew-head p { margin: 0; font-size: 15px; color: var(--ink-3); }
+  .crew-grid { display: grid; grid-template-columns: repeat(3, 1fr); margin: 0; padding: 0; list-style: none; column-gap: 32px; }
+  .crew-grid li { display: flex; align-items: center; gap: 16px; padding: 22px 0; border-bottom: 1px solid var(--line); }
+  .badges { display: flex; flex: none; }
+  .badge {
+    display: grid; place-items: center; width: 48px; height: 48px; border-radius: 50%;
+    background: var(--maroon-tint); color: var(--maroon);
+    font-size: 15px; font-weight: 800; font-stretch: 120%;
+  }
+  .badges .badge + .badge { margin-left: -8px; box-shadow: 0 0 0 3px var(--paper); background: #E4EAE6; color: var(--green); }
+  .role { font: 500 11px/1.3 var(--mono); letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-3); }
+  .who { margin-top: 4px; font-size: 18px; font-weight: 700; line-height: 1.3; }
+  .who small { font: 500 12px/1 var(--mono); color: var(--ink-3); }
+  @media (max-width: 900px) { .crew-grid { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 560px) { .crew-grid { grid-template-columns: 1fr; } }
+
+  /* ---------- Events & gallery ---------- */
+  .events { background: var(--paper-2); }
+  .events-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(40px, 6vw, 80px); align-items: center; }
+  .event-list { margin: 36px 0 0; padding: 0; list-style: none; }
+  .event-list li { display: grid; grid-template-columns: 96px 1fr; gap: 20px; padding: 22px 0; border-top: 1px solid var(--line-2); }
+  .event-list li:last-child { border-bottom: 1px solid var(--line-2); }
+  .when { padding-top: 5px; font: 600 12px/1.3 var(--mono); letter-spacing: 0.1em; text-transform: uppercase; color: var(--maroon); }
+  .when s { text-decoration-thickness: 2px; color: var(--ink-3); }
+  .event-list h3 { margin-bottom: 6px; font-size: 21px; }
+  .event-list p { margin: 0; font-size: 16px; color: var(--ink-2); }
+  .events-photo { margin: 0; aspect-ratio: 4 / 3; overflow: hidden; border-radius: var(--r); }
+  .events-photo img { width: 100%; height: 100%; object-fit: cover; }
+  .events-photo figcaption { margin-top: 10px; font: 500 12px/1.4 var(--mono); color: var(--ink-3); }
+  @media (max-width: 860px) {
+    .events-grid { grid-template-columns: 1fr; }
+    .event-list li { grid-template-columns: 1fr; gap: 6px; }
+  }
+
+  .gallery { margin-top: clamp(80px, 10vw, 120px); }
+  .gallery-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 12px 24px; margin-bottom: 24px; }
+  .gallery-head h3 { font-size: clamp(26px, 3vw, 34px); }
+  .gallery-head p { margin: 0; font-size: 15px; color: var(--ink-2); }
+  .gallery-head a { color: var(--maroon); font-weight: 600; }
+  .gallery-grid { display: grid; grid-template-columns: repeat(4, 1fr); grid-auto-rows: clamp(140px, 16vw, 210px); gap: 12px; }
+  .tile { position: relative; padding: 0; overflow: hidden; border: 0; border-radius: var(--r); background: var(--line); cursor: zoom-in; }
+  .tile img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s ease; }
+  .tile:hover img { transform: scale(1.04); }
+  .tile .cap {
+    position: absolute; left: 10px; bottom: 10px;
+    padding: 6px 8px; border-radius: 3px;
+    background: rgba(22, 23, 27, .74); color: #fff;
+    font: 500 11px/1 var(--mono); letter-spacing: 0.08em; text-transform: uppercase;
+    opacity: 0; transform: translateY(4px); transition: opacity .25s, transform .25s;
+  }
+  .tile:hover .cap, .tile:focus-visible .cap { opacity: 1; transform: none; }
+  .t-big { grid-column: span 2; grid-row: span 2; }
+  .t-wide { grid-column: span 2; }
+  @media (max-width: 700px) {
+    .gallery-grid { grid-template-columns: 1fr 1fr; grid-auto-rows: 150px; gap: 8px; }
+    .tile .cap { opacity: 1; transform: none; }
+  }
+
+  /* ---------- Resources ---------- */
+  .res-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 48px; align-items: start; }
+  .res-group h3 {
+    margin-bottom: 4px; padding-bottom: 12px; border-bottom: 2px solid var(--ink);
+    font: 600 12px/1.3 var(--mono); letter-spacing: 0.14em; text-transform: uppercase; color: var(--maroon);
+  }
+  .res-group ul { margin: 0; padding: 0; list-style: none; }
+  .res-group a { display: flex; justify-content: space-between; gap: 12px; padding: 11px 0; border-bottom: 1px solid var(--line); font-size: 16px; font-weight: 500; text-decoration: none; }
+  .res-group a::after { content: "↗"; display: inline-block; color: var(--ink-3); transition: transform .2s, color .2s; }
+  .res-group a:hover { color: var(--maroon); }
+  .res-group a:hover::after { color: var(--maroon); transform: translate(2px, -2px); }
+  @media (max-width: 960px) { .res-grid { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 620px) { .res-grid { grid-template-columns: 1fr; gap: 36px; } }
+
+  /* ---------- Contact ---------- */
+  .contact { background: var(--maroon); color: #fff; }
+  .contact .kicker { color: rgba(255, 255, 255, .78); }
+  .contact h2 { color: #fff; }
+  .contact-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: clamp(40px, 6vw, 88px); align-items: start; }
+  .contact-copy > p { margin-top: 24px; color: rgba(255, 255, 255, .86); max-width: 44ch; }
+  .facts { margin: 36px 0 0; padding: 0; list-style: none; border-top: 1px solid rgba(255, 255, 255, .24); }
+  .facts li { display: grid; grid-template-columns: 128px 1fr; gap: 16px; padding: 14px 0; border-bottom: 1px solid rgba(255, 255, 255, .24); }
+  .facts span { padding-top: 3px; font: 500 11.5px/1.5 var(--mono); letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255, 255, 255, .7); }
+
+  .form { padding: clamp(24px, 3.4vw, 40px); background: var(--card); color: var(--ink); border-radius: 10px; box-shadow: 0 40px 80px -40px rgba(0, 0, 0, .55); }
+  .form h3 { font-size: 24px; margin-bottom: 24px; }
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  .full { grid-column: 1 / -1; }
+  .form label, .form legend { display: block; margin-bottom: 7px; padding: 0; font-size: 14px; font-weight: 600; }
+  .form .opt { font-weight: 400; color: var(--ink-3); }
+  .form fieldset { margin: 0; padding: 0; border: 0; min-width: 0; }
+  .form input:not([type="radio"]), .form select, .form textarea {
+    width: 100%; padding: 12px 14px;
+    font: inherit; font-size: 16px; color: var(--ink);
+    background: var(--paper); border: 1.5px solid var(--line-2); border-radius: 5px;
+    transition: border-color .15s, box-shadow .15s;
+  }
+  .form select {
+    -webkit-appearance: none; appearance: none; padding-right: 40px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%2316171B' stroke-width='1.8'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: right 14px center;
+  }
+  .form textarea { min-height: 130px; resize: vertical; }
+  .form input:focus, .form select:focus, .form textarea:focus { outline: none; border-color: var(--maroon); box-shadow: 0 0 0 3px rgba(142, 27, 34, .15); }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip { position: relative; margin: 0 !important; }
+  .chip input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+  .chip span { display: inline-block; padding: 9px 14px; border: 1.5px solid var(--line-2); border-radius: 999px; font-size: 14px; font-weight: 500; cursor: pointer; transition: background-color .15s, color .15s, border-color .15s; }
+  .chip span:hover { border-color: var(--ink); }
+  .chip input:checked + span { background: var(--ink); border-color: var(--ink); color: var(--paper); }
+  .chip input:focus-visible + span { outline: 2px solid var(--maroon); outline-offset: 2px; }
+  .form-foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; margin-top: 24px; }
+  .form-note { margin: 0; font-size: 13px; color: var(--ink-3); }
+  .form-status { display: none; margin-top: 16px; padding: 12px 14px; border-radius: 6px; font-size: 14.5px; }
+  .form-status.show { display: block; }
+  .form-status.ok { background: #E4EFE8; color: var(--green); }
+  .form-status.warn { background: #FBF1DA; color: #6B4E0A; }
+  @media (max-width: 900px) { .contact-grid { grid-template-columns: 1fr; } }
+  @media (max-width: 560px) {
+    .form-grid { grid-template-columns: 1fr; }
+    .facts li { grid-template-columns: 1fr; gap: 2px; }
+    .form-foot .btn { width: 100%; justify-content: center; }
+  }
+
+  /* ---------- Footer ---------- */
+  .site-footer { padding: 64px 0 32px; background: var(--night); color: var(--night-muted); font-size: 15px; }
+  .foot-grid { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 40px; }
+  .foot-brand img { height: 68px; width: auto; }
+  .foot-brand p { margin: 18px 0 0; max-width: 34ch; }
+  .site-footer h4 { margin: 0 0 14px; font: 500 11.5px/1.3 var(--mono); letter-spacing: 0.14em; text-transform: uppercase; color: var(--night-text); }
+  .site-footer ul { margin: 0; padding: 0; list-style: none; }
+  .site-footer li a { display: inline-block; padding: 5px 0; text-decoration: none; }
+  .site-footer li a:hover { color: #fff; }
+  .foot-base { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--night-line); font: 400 12px/1.5 var(--mono); letter-spacing: 0.06em; }
+  @media (max-width: 760px) { .foot-grid { grid-template-columns: 1fr 1fr; } .foot-brand { grid-column: 1 / -1; } }
+
+  /* ---------- Lightbox ---------- */
+  .lightbox { max-width: min(1100px, 92vw); max-height: 92vh; padding: 0; overflow: visible; background: transparent; border: 0; }
+  .lightbox::backdrop { background: rgba(10, 11, 14, .88); }
+  .lightbox figure { margin: 0; }
+  .lightbox img { width: auto; max-width: 100%; max-height: 78vh; margin: 0 auto; border-radius: 6px; }
+  .lightbox figcaption { margin-top: 14px; font: 500 13px/1.4 var(--mono); letter-spacing: 0.04em; text-align: center; color: #D9D6CD; }
+  .lb-btn {
+    position: absolute; display: grid; place-items: center;
+    width: 40px; height: 40px; border: 0; border-radius: 50%;
+    background: #fff; color: var(--ink); font-size: 18px; line-height: 1; cursor: pointer;
+  }
+  .lb-close { top: -52px; right: 0; }
+  .lb-prev, .lb-next { top: calc(39vh - 20px); }
+  .lb-prev { left: -56px; }
+  .lb-next { right: -56px; }
+  @media (max-width: 760px) {
+    .lb-prev, .lb-next { top: auto; bottom: -56px; }
+    .lb-prev { left: calc(50% - 48px); }
+    .lb-next { right: calc(50% - 48px); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { transition: none !important; animation: none !important; }
+  }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <div class="wrap nav">
+    <a class="brand" href="#top" aria-label="Del-Penn Flyers home">
+      <img src="https://www.delpenn.org/wp-content/uploads/2025/08/cropped-Del-Penn-Flyers-set-1-01-outline-PNG-1-300x158.png"
+           srcset="https://www.delpenn.org/wp-content/uploads/2025/08/cropped-Del-Penn-Flyers-set-1-01-outline-PNG-1-300x158.png 300w,
+                   https://www.delpenn.org/wp-content/uploads/2025/08/cropped-Del-Penn-Flyers-set-1-01-outline-PNG-1-768x405.png 768w"
+           sizes="95px" width="95" height="50" alt="Del-Penn Flyers, established 1973">
+    </a>
+    <nav aria-label="Main">
+      <button class="menu-btn" type="button" aria-expanded="false" aria-controls="nav-links"><span></span><b class="sr-only">Menu</b></button>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="#fleet">Fleet</a></li>
+        <li><a href="#membership">Membership</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#events">Events</a></li>
+        <li><a href="#resources">Resources</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <li class="mobile-cta"><a class="btn btn-primary" href="#contact">Join the waitlist</a></li>
+      </ul>
+    </nav>
+    <a class="btn btn-primary nav-cta" href="#contact">Join the waitlist</a>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- Hero -->
+  <section class="hero" id="top">
+    <div class="wrap">
+      <ul class="hero-meta">
+        <li>Est. 1973</li>
+        <li>New Castle Airport · ILG</li>
+        <li>Delaware</li>
+      </ul>
+      <h1>Take to<br>the <em>skies.</em></h1>
+      <div class="hero-row">
+        <p class="lead">A member-run flying club founded to provide fun, safe, and economical opportunities for flight &mdash; and still doing exactly that, more than fifty years on.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#contact">Join the waitlist <span class="arrow" aria-hidden="true">→</span></a>
+          <a class="btn btn-ghost" href="#fleet">Meet the fleet</a>
+        </div>
+      </div>
+
+      <div class="hero-visual">
+        <figure class="hero-photo">
+          <img src="https://www.delpenn.org/wp-content/uploads/2015/10/cropped-planes.jpg" width="1600" height="1200"
+               alt="The club's Cessna 182 N44LM in the foreground and Cessna 172 N2918E behind it on the ramp under a blue sky" fetchpriority="high">
+          <figcaption class="photo-pill">N44LM &amp; N2918E · On the ramp</figcaption>
+        </figure>
+        <ul class="stats">
+          <li class="stat"><b>1973</b><span>Founded</span></li>
+          <li class="stat"><b>2</b><span>Cessnas</span></li>
+          <li class="stat"><b>27</b><span>Active flyers</span></li>
+          <li class="stat"><b>$118</b><span>Per hour, wet</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Values -->
+  <section class="values" aria-label="Why fly with us">
+    <div class="wrap values-grid">
+      <article class="value">
+        <span class="n">01</span>
+        <h3>Affordable flying</h3>
+        <p>Hourly rates are pegged to the price of fuel at ILG and billed wet on tach time, so fuel is always included.</p>
+      </article>
+      <article class="value">
+        <span class="n">02</span>
+        <h3>Well-equipped, rigorously maintained</h3>
+        <p>A 180&nbsp;HP Skyhawk and an autopilot-equipped Skylane, both ADS-B Out compliant and hangared on the field.</p>
+      </article>
+      <article class="value">
+        <span class="n">03</span>
+        <h3>Friendly, supportive pilots</h3>
+        <p>A close-knit roster of members who share airplanes, advice, and the occasional hangar BBQ.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- Fleet -->
+  <section class="fleet" id="fleet">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <p class="kicker">01 — The fleet</p>
+          <h2>Two Cessnas. Kept right.</h2>
+        </div>
+        <p>Well-equipped aircraft that are rigorously maintained. Both are ADS-B Out compliant and live in the West T-hangars at New Castle.</p>
+      </div>
+
+      <article class="plane skyhawk">
+        <figure class="plane-media">
+          <div class="plane-photo">
+            <img src="https://www.delpenn.org/wp-content/uploads/2016/04/aircraft_home-1024x683-1.jpg" width="1024" height="683" loading="lazy"
+                 alt="Cessna 172 Skyhawk N2918E, white with green stripes, parked on the ramp">
+          </div>
+          <button class="panel-thumb" type="button"
+                  data-full="https://www.delpenn.org/wp-content/uploads/2017/09/IMG_0678.jpg"
+                  data-caption="N2918E · Cessna 172 instrument panel">
+            <img src="https://www.delpenn.org/wp-content/uploads/2017/09/IMG_0678-1024x768.jpg" width="1024" height="768" loading="lazy" alt="Instrument panel of the Cessna 172">
+            <span>Panel ⤢</span>
+          </button>
+        </figure>
+        <div class="plane-body">
+          <p class="model">Cessna 172 Skyhawk</p>
+          <h3 class="tail">N2918E</h3>
+          <p>A Skyhawk with a little extra muscle: its 180&nbsp;HP engine was overhauled in January 2017. Easy to fly, easy to love, and right at home on local hops and weekend breakfast runs.</p>
+          <dl class="specs">
+            <dt>Engine</dt><dd>180 HP, overhauled Jan 2017</dd>
+            <dt>Avionics</dt><dd>ADS-B Out compliant</dd>
+            <dt>Based</dt><dd>West T-hangars, ILG</dd>
+            <dt>Ops lead</dt><dd>Tony Zecca</dd>
+            <dt>Rate</dt><dd class="rate">$118 <small>/ hr wet · tach</small></dd>
+          </dl>
+        </div>
+      </article>
+
+      <article class="plane skylane flip">
+        <figure class="plane-media">
+          <div class="plane-photo zoom">
+            <img src="https://www.delpenn.org/wp-content/uploads/2015/10/planes-1024x768.jpg" width="1024" height="768" loading="lazy"
+                 alt="Cessna 182 Skylane N44LM, white with maroon stripes, on the ramp">
+          </div>
+          <button class="panel-thumb" type="button"
+                  data-full="https://www.delpenn.org/wp-content/uploads/2017/09/IMG_0657.jpg"
+                  data-caption="N44LM · Cessna 182 instrument panel with autopilot">
+            <img src="https://www.delpenn.org/wp-content/uploads/2017/09/IMG_0657-1024x768.jpg" width="1024" height="768" loading="lazy" alt="Instrument panel of the Cessna 182 with Garmin avionics and autopilot">
+            <span>Panel ⤢</span>
+          </button>
+        </figure>
+        <div class="plane-body">
+          <p class="model">Cessna 182 Skylane</p>
+          <h3 class="tail">N44LM</h3>
+          <p>A great cross-country airplane. The 182 cruises at about 130&nbsp;KTAS with the weight-and-balance capacity for four typical adults and their bags &mdash; and an autopilot to help on the long legs.</p>
+          <dl class="specs">
+            <dt>Cruise</dt><dd>≈ 130 KTAS</dd>
+            <dt>Payload</dt><dd>Four adults plus bags</dd>
+            <dt>Avionics</dt><dd>Autopilot · ADS-B Out</dd>
+            <dt>Based</dt><dd>West T-hangars, ILG</dd>
+            <dt>Ops lead</dt><dd>Craig Karchner</dd>
+            <dt>Rate</dt><dd class="rate">$171 <small>/ hr wet · tach</small></dd>
+          </dl>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- Membership -->
+  <section class="membership" id="membership">
+    <div class="wrap mem-grid">
+      <div class="mem-intro">
+        <p class="kicker">02 — Membership</p>
+        <h2>Flying that actually pencils out.</h2>
+        <p>We have 27 active flyers on our roster. Members share the cost of keeping two great airplanes flying, and the hourly rate tracks the price of fuel rather than a rental markup.</p>
+
+        <ul class="ratecard" id="rates">
+          <li><span class="item">Cessna 172 Skyhawk<small>Per hour · wet · tach time</small></span><i class="dots"></i><span class="price" data-rate="c172" data-value="118">$118<small>/hr</small></span></li>
+          <li><span class="item">Cessna 182 Skylane<small>Per hour · wet · tach time</small></span><i class="dots"></i><span class="price" data-rate="c182" data-value="171">$171<small>/hr</small></span></li>
+          <li><span class="item">Monthly dues</span><i class="dots"></i><span class="price" data-rate="dues" data-value="197">$197<small>/mo</small></span></li>
+          <li><span class="item">Membership fee<small>One time</small></span><i class="dots"></i><span class="price" data-rate="fee" data-value="500">$500</span></li>
+          <li><span class="item">Bond purchase<small>Refunded when you leave the club</small></span><i class="dots"></i><span class="price" data-rate="bond" data-value="3000">$3,000</span></li>
+        </ul>
+        <p class="footnote">Rates as of January 2026. The hourly rate is pegged to the price of fuel at ILG &mdash; when fuel was about $5/gallon, it was $95/hr for the C172 and $135/hr for the C182.</p>
+
+        <div class="holdshort">
+          <div class="marking" aria-hidden="true"></div>
+          <strong>Hold short · Waitlist in effect</strong>
+          <p>The club currently keeps a waitlist so flying availability stays fair for every member. Send us a note and we&rsquo;ll add you to the list.</p>
+        </div>
+      </div>
+
+      <aside class="calc" aria-labelledby="calc-title">
+        <h3 id="calc-title">Estimate your month</h3>
+        <p class="sub">Slide to see what a typical month might cost at current rates.</p>
+
+        <div class="field">
+          <div class="field-top"><label for="h172">Cessna 172 hours / month</label><output id="o172" for="h172">4 h</output></div>
+          <input type="range" id="h172" min="0" max="20" step="0.5" value="4">
+        </div>
+        <div class="field">
+          <div class="field-top"><label for="h182">Cessna 182 hours / month</label><output id="o182" for="h182">0 h</output></div>
+          <input type="range" id="h182" min="0" max="20" step="0.5" value="0">
+        </div>
+
+        <div class="total" aria-live="polite">
+          <div class="total-row"><span class="big" id="total">$669</span><span class="per">per month</span></div>
+          <p class="eff" id="eff">About $167 per flight hour, dues included · $8,028 a year</p>
+          <ul class="breakdown">
+            <li><span>Monthly dues</span><b id="b-dues">$197</b></li>
+            <li><span id="l172">C172 · 4 h × $118</span><b id="b172">$472</b></li>
+            <li><span id="l182">C182 · 0 h × $171</span><b id="b182">$0</b></li>
+          </ul>
+        </div>
+        <div class="upfront">To get started: <b id="upfront">$3,500</b> &mdash; the one-time membership fee plus a bond that&rsquo;s refunded when you leave.</div>
+        <a class="btn btn-light" href="#contact">I&rsquo;m ready to join <span class="arrow" aria-hidden="true">→</span></a>
+        <p class="fine">Estimate only. Billing is by tach time, and hourly rates follow fuel prices.</p>
+      </aside>
+    </div>
+  </section>
+
+  <!-- About -->
+  <section class="about" id="about">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <p class="kicker">03 — About the club</p>
+          <h2>Logging hours since 1973.</h2>
+        </div>
+        <p>Del-Penn Flyers Inc. was organized in 1973 for the purpose of safe, economical flying. Five founding members and a Piper TriPacer started it all at Toughkenamon airport &mdash; and the club celebrated its 50th anniversary in 2023.</p>
+      </div>
+
+      <div class="logbook-wrap">
+        <table class="logbook">
+          <caption>Club logbook · Del-Penn Flyers Inc.</caption>
+          <thead>
+            <tr><th scope="col">Date</th><th scope="col">Aircraft</th><th scope="col">Remarks</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="date">1973</td><td class="craft">Piper TriPacer</td><td class="remarks">Club organized at Toughkenamon airport by five founding members.</td></tr>
+            <tr><td class="date">1975</td><td class="craft">Cessna 120</td><td class="remarks">A taildragger joins the line.</td></tr>
+            <tr><td class="date">Since</td><td class="craft">Cessna Skylane · Mooney M20 · Piper 180 · Piper Archer · two Skyhawks · two Cardinal RGs</td><td class="remarks">A long line of club airplanes, each shared by members who split the cost and the fun.</td></tr>
+            <tr><td class="date">2023</td><td class="craft">&mdash;</td><td class="remarks">Fifty years in the air: the club celebrates its 50th anniversary.</td></tr>
+            <tr class="today"><td class="date">Today</td><td class="craft">Cessna 172 N2918E · Cessna 182 N44LM</td><td class="remarks">27 active flyers, based at New Castle Airport (ILG).</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="crew">
+        <div class="crew-head">
+          <h3>Club officers</h3>
+          <p>The members who keep the club running.</p>
+        </div>
+        <ul class="crew-grid">
+          <li><span class="badges"><span class="badge" aria-hidden="true">JC</span></span><div><div class="role">President</div><div class="who">Joseph Cudia</div></div></li>
+          <li><span class="badges"><span class="badge" aria-hidden="true">LM</span></span><div><div class="role">Vice President</div><div class="who">Lonzo McLaughlin</div></div></li>
+          <li><span class="badges"><span class="badge" aria-hidden="true">TZ</span><span class="badge" aria-hidden="true">CK</span></span><div><div class="role">Operations</div><div class="who">Tony Zecca <small>C172</small><br>Craig Karchner <small>C182</small></div></div></li>
+          <li><span class="badges"><span class="badge" aria-hidden="true">JT</span></span><div><div class="role">Member Representative</div><div class="who">Jamie Teufel</div></div></li>
+          <li><span class="badges"><span class="badge" aria-hidden="true">BB</span></span><div><div class="role">Treasurer / Secretary</div><div class="who">Bob Buccino</div></div></li>
+          <li><span class="badges"><span class="badge" aria-hidden="true">DM</span></span><div><div class="role">Safety Representative</div><div class="who">Dan McCoy</div></div></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Events & gallery -->
+  <section class="events" id="events">
+    <div class="wrap">
+      <div class="events-grid">
+        <div>
+          <p class="kicker">04 — Events</p>
+          <h2>Fewer meetings. More flying.</h2>
+          <ul class="event-list">
+            <li>
+              <span class="when">Yearly</span>
+              <div><h3>Annual meeting</h3><p>A review of the club&rsquo;s current status, future directions, and financials.</p></div>
+            </li>
+            <li>
+              <span class="when">Biannual</span>
+              <div><h3>Hangar BBQs</h3><p>Food, friends, and airplanes at the hangar. The best way to meet the crew.</p></div>
+            </li>
+            <li>
+              <span class="when"><s>Monthly</s></span>
+              <div><h3>No monthly meetings</h3><p>There are no monthly meetings for the general membership. Go fly instead.</p></div>
+            </li>
+          </ul>
+        </div>
+        <figure class="events-photo">
+          <img src="https://www.delpenn.org/wp-content/uploads/2016/04/3-1024x768.jpg" width="1024" height="768" loading="lazy"
+               alt="N2918E parked in an open hangar with members sitting at a table inside">
+        </figure>
+      </div>
+
+      <div class="gallery" id="gallery">
+        <div class="gallery-head">
+          <h3>From the ramp</h3>
+          <p>Have photos from a club flight? <a href="#contact">Send them our way</a> &mdash; we&rsquo;d love to add them.</p>
+        </div>
+        <div class="gallery-grid">
+          <button class="tile t-big" type="button" data-group="gallery" data-full="https://www.delpenn.org/wp-content/uploads/2015/10/cropped-planes.jpg" data-caption="N44LM and N2918E on the ramp">
+            <img src="https://www.delpenn.org/wp-content/uploads/2015/10/planes-1024x768.jpg" width="1024" height="768" loading="lazy" alt="Both club Cessnas on the ramp"><span class="cap">On the ramp</span>
+          </button>
+          <button class="tile t-wide" type="button" data-group="gallery" data-full="https://www.delpenn.org/wp-content/uploads/2016/04/aircraft_home-1024x683-1.jpg" data-caption="N2918E · Cessna 172 Skyhawk">
+            <img src="https://www.delpenn.org/wp-content/uploads/2016/04/aircraft_home-1024x683-1.jpg" width="1024" height="683" loading="lazy" alt="Cessna 172 N2918E"><span class="cap">N2918E</span>
+          </button>
+          <button class="tile" type="button" data-group="gallery" data-full="https://www.delpenn.org/wp-content/uploads/2017/09/IMG_0678.jpg" data-caption="Cessna 172 instrument panel">
+            <img src="https://www.delpenn.org/wp-content/uploads/2017/09/IMG_0678-1024x768.jpg" width="1024" height="768" loading="lazy" alt="Cessna 172 instrument panel"><span class="cap">172 panel</span>
+          </button>
+          <button class="tile" type="button" data-group="gallery" data-full="https://www.delpenn.org/wp-content/uploads/2017/09/IMG_0657.jpg" data-caption="Cessna 182 instrument panel">
+            <img src="https://www.delpenn.org/wp-content/uploads/2017/09/IMG_0657-1024x768.jpg" width="1024" height="768" loading="lazy" alt="Cessna 182 instrument panel"><span class="cap">182 panel</span>
+          </button>
+          <button class="tile t-wide" type="button" data-group="gallery" data-full="https://www.delpenn.org/wp-content/uploads/2016/04/3.jpg" data-caption="N2918E at home in the hangar">
+            <img src="https://www.delpenn.org/wp-content/uploads/2016/04/3-1024x768.jpg" width="1024" height="768" loading="lazy" alt="N2918E in the hangar"><span class="cap">Hangar</span>
+          </button>
+          <button class="tile t-wide" type="button" data-group="gallery" data-full="https://www.delpenn.org/wp-content/uploads/2016/04/20-1-1024x683.jpg" data-caption="Inside the Skyhawk">
+            <img src="https://www.delpenn.org/wp-content/uploads/2016/04/20-1-1024x683.jpg" width="1024" height="683" loading="lazy" alt="Tan leather cabin interior of the Cessna 172"><span class="cap">Cabin</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Resources -->
+  <section class="resources" id="resources">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <p class="kicker">05 — Resources</p>
+          <h2>The pilot&rsquo;s bookshelf.</h2>
+        </div>
+        <p>Links we find useful for planning, staying current, and staying curious.</p>
+      </div>
+      <div class="res-grid">
+        <div class="res-group">
+          <h3>Weather</h3>
+          <ul>
+            <li><a href="https://aviationweather.gov/" target="_blank" rel="noopener">NOAA Aviation Weather Center</a></li>
+            <li><a href="http://maps.avnwx.com/" target="_blank" rel="noopener">AvnWX weather maps</a></li>
+            <li><a href="https://6abc.com/topic/weather/" target="_blank" rel="noopener">6abc / WPVI local weather</a></li>
+          </ul>
+        </div>
+        <div class="res-group">
+          <h3>Planning &amp; reference</h3>
+          <ul>
+            <li><a href="https://www.airnav.com/airports/" target="_blank" rel="noopener">AirNav airport database</a></li>
+            <li><a href="https://www.airnav.com/navaids/" target="_blank" rel="noopener">AirNav navaid info</a></li>
+            <li><a href="https://www.airnav.com/plan/fuel-stops.html" target="_blank" rel="noopener">AirNav fuel stop planner</a></li>
+            <li><a href="https://www.faa.gov/air_traffic/publications/atpubs/aim_html/" target="_blank" rel="noopener">Aeronautical Information Manual</a></li>
+            <li><a href="https://registry.faa.gov/aircraftinquiry/Search/NNumberInquiry" target="_blank" rel="noopener">FAA N-number search</a></li>
+          </ul>
+        </div>
+        <div class="res-group">
+          <h3>FAA &amp; safety</h3>
+          <ul>
+            <li><a href="https://www.faa.gov/" target="_blank" rel="noopener">FAA</a></li>
+            <li><a href="https://www.faa.gov/licenses_certificates/airmen_certification/airmen_services/" target="_blank" rel="noopener">FAA Airmen online services</a></li>
+            <li><a href="https://amsrvs.registry.faa.gov/airmeninquiry/" target="_blank" rel="noopener">Airmen certification inquiry</a></li>
+            <li><a href="https://www.faa.gov/pilots/amelocator/" target="_blank" rel="noopener">Find a medical examiner</a></li>
+            <li><a href="https://www.ntsb.gov/Pages/AviationQueryV2.aspx" target="_blank" rel="noopener">NTSB accident reports</a></li>
+            <li><a href="https://asrs.arc.nasa.gov/" target="_blank" rel="noopener">NASA Aviation Safety Reporting System</a></li>
+          </ul>
+        </div>
+        <div class="res-group">
+          <h3>Organizations</h3>
+          <ul>
+            <li><a href="https://www.aopa.org/" target="_blank" rel="noopener">AOPA</a></li>
+            <li><a href="https://www.eaa.org/" target="_blank" rel="noopener">Experimental Aircraft Association</a></li>
+            <li><a href="https://www.cessna.org/" target="_blank" rel="noopener">Cessna Pilots Association</a></li>
+            <li><a href="https://www.gocivilairpatrol.com/" target="_blank" rel="noopener">Civil Air Patrol</a></li>
+            <li><a href="https://www.iaopa.org/" target="_blank" rel="noopener">IAOPA</a></li>
+            <li><a href="https://www.nbaa.org/" target="_blank" rel="noopener">NBAA</a></li>
+            <li><a href="https://www.pama.org/" target="_blank" rel="noopener">PAMA</a></li>
+            <li><a href="https://www.ssa.org/" target="_blank" rel="noopener">Soaring Society of America</a></li>
+            <li><a href="https://www.afa.org/" target="_blank" rel="noopener">Air &amp; Space Forces Association</a></li>
+            <li><a href="https://www.aiaa.org/" target="_blank" rel="noopener">AIAA</a></li>
+            <li><a href="http://www.firstflight.org/" target="_blank" rel="noopener">First Flight Society</a></li>
+            <li><a href="https://tighar.org/" target="_blank" rel="noopener">TIGHAR</a></li>
+          </ul>
+        </div>
+        <div class="res-group">
+          <h3>Learning to fly</h3>
+          <ul>
+            <li><a href="https://www.gleimaviation.com/pilots/" target="_blank" rel="noopener">Gleim: learning to fly</a></li>
+            <li><a href="http://www.beapilot.com/library/" target="_blank" rel="noopener">Be a Pilot aviation library</a></li>
+            <li><a href="http://www.bestaviation.net/" target="_blank" rel="noopener">BestAviation.net</a></li>
+          </ul>
+          <h3 style="margin-top:36px">Shopping &amp; reading</h3>
+          <ul>
+            <li><a href="https://www.sportys.com/" target="_blank" rel="noopener">Sporty&rsquo;s</a></li>
+            <li><a href="https://ww2.jeppesen.com/" target="_blank" rel="noopener">Jeppesen</a></li>
+            <li><a href="http://www.tailwinds.com/" target="_blank" rel="noopener">Tailwinds</a></li>
+            <li><a href="https://www.trade-a-plane.com/" target="_blank" rel="noopener">Trade-A-Plane</a></li>
+            <li><a href="https://www.avweb.com/" target="_blank" rel="noopener">AVweb</a></li>
+          </ul>
+        </div>
+        <div class="res-group">
+          <h3>Agencies &amp; museums</h3>
+          <ul>
+            <li><a href="https://www.ntsb.gov/" target="_blank" rel="noopener">NTSB</a></li>
+            <li><a href="https://www.nasa.gov/" target="_blank" rel="noopener">NASA</a></li>
+            <li><a href="https://www.af.mil/" target="_blank" rel="noopener">U.S. Air Force</a></li>
+            <li><a href="https://airandspace.si.edu/" target="_blank" rel="noopener">National Air and Space Museum</a></li>
+            <li><a href="http://www.avhome.com/" target="_blank" rel="noopener">The Aviation Home Page</a></li>
+            <li><a href="http://www.aero.com/" target="_blank" rel="noopener">Aero.com</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section class="contact" id="contact">
+    <div class="wrap contact-grid">
+      <div class="contact-copy">
+        <p class="kicker">06 — Contact &amp; join</p>
+        <h2>Ready to join? Let&rsquo;s talk.</h2>
+        <p>The club would love to hear from you. Questions about membership, the airplanes, or the waitlist go to our member representative, Jamie Teufel.</p>
+        <ul class="facts">
+          <li><span>Contact</span><div>Jamie Teufel, Member Representative</div></li>
+          <li><span>Home base</span><div>New Castle Airport (ILG), Delaware</div></li>
+          <li><span>Membership</span><div>Waitlist in effect &mdash; 27 active flyers</div></li>
+          <li><span>Fleet</span><div>Cessna 172 Skyhawk · Cessna 182 Skylane</div></li>
+        </ul>
+      </div>
+
+      <form class="form" id="contact-form" action="https://formspree.io/f/YOUR-FORM-ID" method="POST">
+        <h3>Send the club a note</h3>
+        <div class="form-grid">
+          <div><label for="f-name">Name</label><input id="f-name" name="name" type="text" autocomplete="name" required></div>
+          <div><label for="f-email">Email</label><input id="f-email" name="email" type="email" autocomplete="email" required></div>
+          <div><label for="f-phone">Phone <span class="opt">(optional)</span></label><input id="f-phone" name="phone" type="tel" autocomplete="tel"></div>
+          <div>
+            <label for="f-cert">Pilot certificate</label>
+            <select id="f-cert" name="certificate">
+              <option value="">Select one</option>
+              <option>Not a pilot yet</option>
+              <option>Student pilot</option>
+              <option>Sport / Recreational</option>
+              <option>Private</option>
+              <option>Private + Instrument</option>
+              <option>Commercial</option>
+              <option>ATP</option>
+              <option>CFI / CFII</option>
+            </select>
+          </div>
+          <fieldset class="full">
+            <legend>I&rsquo;m interested in</legend>
+            <div class="chips">
+              <label class="chip"><input type="radio" name="topic" value="Joining / waitlist" checked><span>Joining / the waitlist</span></label>
+              <label class="chip"><input type="radio" name="topic" value="General question"><span>A general question</span></label>
+              <label class="chip"><input type="radio" name="topic" value="Sharing photos"><span>Sharing photos</span></label>
+            </div>
+          </fieldset>
+          <div class="full"><label for="f-hours">Total flight hours <span class="opt">(optional)</span></label><input id="f-hours" name="hours" type="number" min="0" inputmode="numeric"></div>
+          <div class="full"><label for="f-msg">Message</label><textarea id="f-msg" name="message" required placeholder="Tell us a little about your flying and what you're looking for."></textarea></div>
+        </div>
+        <div class="form-foot">
+          <p class="form-note">We&rsquo;ll only use your details to reply.</p>
+          <button class="btn btn-primary" type="submit">Send message <span class="arrow" aria-hidden="true">→</span></button>
+        </div>
+        <div class="form-status" id="form-status" role="status"></div>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <img src="https://www.delpenn.org/wp-content/uploads/2025/08/cropped-Del-Penn-Flyers-set-1-01-outline-PNG-1-300x158.png" width="129" height="68" loading="lazy" alt="Del-Penn Flyers">
+        <p>Fun, safe, and economical flying since 1973. Del-Penn Flyers, Inc. · New Castle Airport (ILG), Delaware.</p>
+      </div>
+      <div>
+        <h4>The club</h4>
+        <ul>
+          <li><a href="#about">About &amp; history</a></li>
+          <li><a href="#fleet">Our planes</a></li>
+          <li><a href="#membership">Membership &amp; rates</a></li>
+          <li><a href="#events">Events</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Pilots</h4>
+        <ul>
+          <li><a href="#resources">Resources</a></li>
+          <li><a href="#gallery">Photos</a></li>
+          <li><a href="#contact">Contact</a></li>
+          <li><a href="#contact">Join the waitlist</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-base">
+      <span>© <span id="year">2026</span> Del-Penn Flyers, Inc.</span>
+      <span>Blue side up.</span>
+    </div>
+  </div>
+</footer>
+
+<dialog class="lightbox" id="lightbox" aria-label="Photo viewer">
+  <button class="lb-btn lb-close" type="button" aria-label="Close">✕</button>
+  <button class="lb-btn lb-prev" type="button" aria-label="Previous photo">←</button>
+  <button class="lb-btn lb-next" type="button" aria-label="Next photo">→</button>
+  <figure><img id="lb-img" alt=""><figcaption id="lb-cap"></figcaption></figure>
+</dialog>
+
+<script>
+(() => {
+  // Header border once the page scrolls
+  const header = document.querySelector('.site-header');
+  const onScroll = () => header.classList.toggle('scrolled', window.scrollY > 8);
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  // Mobile menu
+  const menuBtn = document.querySelector('.menu-btn');
+  const links = document.getElementById('nav-links');
+  const setMenu = open => { links.classList.toggle('open', open); menuBtn.setAttribute('aria-expanded', open); };
+  menuBtn.addEventListener('click', () => setMenu(!links.classList.contains('open')));
+  links.addEventListener('click', e => { if (e.target.closest('a')) setMenu(false); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') setMenu(false); });
+
+  // Highlight the nav link for the section in view
+  const navLinks = [...links.querySelectorAll('a[href^="#"]:not(.btn)')];
+  const byId = new Map(navLinks.map(a => [a.hash.slice(1), a]));
+  const spy = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      navLinks.forEach(a => a.classList.remove('active'));
+      byId.get(entry.target.id)?.classList.add('active');
+    });
+  }, { rootMargin: '-45% 0px -50% 0px' });
+  byId.forEach((_, id) => { const s = document.getElementById(id); if (s) spy.observe(s); });
+
+  // Cost estimator: rates come from the rate card's data-value attributes
+  const rate = key => Number(document.querySelector(`[data-rate="${key}"]`).dataset.value);
+  const R = { c172: rate('c172'), c182: rate('c182'), dues: rate('dues'), fee: rate('fee'), bond: rate('bond') };
+  const money = n => '$' + Math.round(n).toLocaleString('en-US');
+  const hrs = n => (Number.isInteger(n) ? n : n.toFixed(1)) + ' h';
+  const $ = id => document.getElementById(id);
+  const h172 = $('h172'), h182 = $('h182');
+
+  function update() {
+    const a = Number(h172.value), b = Number(h182.value);
+    [h172, h182].forEach(el => el.style.setProperty('--p', (el.value / el.max * 100) + '%'));
+    const cost172 = a * R.c172, cost182 = b * R.c182;
+    const total = R.dues + cost172 + cost182;
+    $('o172').textContent = hrs(a);
+    $('o182').textContent = hrs(b);
+    $('total').textContent = money(total);
+    $('b-dues').textContent = money(R.dues);
+    $('l172').textContent = `C172 · ${hrs(a)} × ${money(R.c172)}`;
+    $('l182').textContent = `C182 · ${hrs(b)} × ${money(R.c182)}`;
+    $('b172').textContent = money(cost172);
+    $('b182').textContent = money(cost182);
+    $('eff').textContent = (a + b) > 0
+      ? `About ${money(total / (a + b))} per flight hour, dues included · ${money(total * 12)} a year`
+      : `Dues only · ${money(total * 12)} a year`;
+  }
+  $('upfront').textContent = money(R.fee + R.bond);
+  h172.addEventListener('input', update);
+  h182.addEventListener('input', update);
+  update();
+
+  // Lightbox for gallery tiles and panel thumbnails
+  const lb = $('lightbox'), lbImg = $('lb-img'), lbCap = $('lb-cap');
+  const prev = lb.querySelector('.lb-prev'), next = lb.querySelector('.lb-next');
+  let group = [], index = 0;
+  function show(i) {
+    index = (i + group.length) % group.length;
+    const el = group[index];
+    lbImg.src = el.dataset.full;
+    lbImg.alt = el.querySelector('img')?.alt || '';
+    lbCap.textContent = el.dataset.caption || '';
+    prev.hidden = next.hidden = group.length < 2;
+  }
+  document.querySelectorAll('[data-full]').forEach(el => {
+    el.addEventListener('click', () => {
+      group = el.dataset.group ? [...document.querySelectorAll(`[data-group="${el.dataset.group}"]`)] : [el];
+      show(group.indexOf(el));
+      lb.showModal();
+    });
+  });
+  lb.querySelector('.lb-close').addEventListener('click', () => lb.close());
+  prev.addEventListener('click', () => show(index - 1));
+  next.addEventListener('click', () => show(index + 1));
+  lb.addEventListener('click', e => { if (e.target === lb) lb.close(); });
+  lb.addEventListener('keydown', e => {
+    if (group.length < 2) return;
+    if (e.key === 'ArrowLeft') show(index - 1);
+    if (e.key === 'ArrowRight') show(index + 1);
+  });
+
+  // Contact form: posts to the action URL once it has been configured
+  const form = $('contact-form'), status = $('form-status');
+  const say = (kind, text) => { status.className = `form-status show ${kind}`; status.textContent = text; };
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+    const action = form.getAttribute('action') || '';
+    if (action.includes('YOUR-FORM-ID')) {
+      say('warn', 'This form isn’t connected yet. Add your form endpoint to the form’s action attribute (see the note at the top of this file).');
+      return;
+    }
+    const button = form.querySelector('button[type="submit"]');
+    button.disabled = true;
+    try {
+      const res = await fetch(action, { method: 'POST', body: new FormData(form), headers: { Accept: 'application/json' } });
+      if (!res.ok) throw new Error(res.statusText);
+      form.reset();
+      say('ok', 'Thanks! Your note is on its way, and Jamie will be in touch soon.');
+    } catch {
+      say('warn', 'Something went wrong sending your message. Please try again in a moment.');
+    } finally {
+      button.disabled = false;
+    }
+  });
+
+  $('year').textContent = new Date().getFullYear();
+})();
+</script>
+</body>
+</html>
